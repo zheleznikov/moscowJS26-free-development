@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Презентация</title>
+    <script src="config.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="node_modules/@shower/ribbon/styles/styles.css">
+    <style>
+        .shower {
+            --slide-ratio: calc(16 / 9);
+            font-family: 'Inter', sans-serif;
+        }
+
+        /* Жёлтый флажок с логотипом JS и номером слайда */
+        .slide::after {
+            background-image: url('assets/ribbon-js.svg');
+            color: #323330;
+            padding-top: 34px;
+        }
+
+        .shower.list {
+            grid-template-columns: repeat(3, calc(var(--slide-width) * var(--slide-scale)));
+            justify-content: center;
+        }
+        .shower.list #slides-container {
+            display: contents;
+        }
+        .shower.list .caption,
+        .shower.list .badge {
+            grid-column: 1 / -1;
+        }
+        .shower.list .slide {
+            cursor: pointer;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgb(0 0 0 / 12%), 0 1px 3px rgb(0 0 0 / 8%);
+            transition: box-shadow 0.2s, transform 0.2s;
+            background-color: #000;
+            color: #e0e0e0;
+        }
+        .shower.list .slide h2,
+        .shower.list .slide h3 {
+            color: #fff;
+        }
+        .shower.list .slide a {
+            color: #7db8f0;
+        }
+        .shower.list .slide code {
+            background: rgba(255,255,255,0.1);
+            color: #e0e0e0;
+        }
+        .shower.list .slide:hover {
+            transform: scale(var(--slide-scale)) translateY(-2px);
+            box-shadow: 0 12px 32px rgb(0 0 0 / 18%), 0 2px 8px rgb(0 0 0 / 10%);
+        }
+        .shower.list .slide.active {
+            box-shadow: 0 0 0 3px #191c20, 0 12px 32px rgb(0 0 0 / 18%);
+        }
+
+        /* Полноэкранные слайды — чёрный фон */
+        .shower.full .slide {
+            background-color: #000;
+            color: #e0e0e0;
+        }
+        .shower.full .slide h2,
+        .shower.full .slide h3 {
+            color: #fff;
+        }
+        .shower.full .slide a {
+            color: #7db8f0;
+        }
+        .shower.full .slide code {
+            background: rgba(255,255,255,0.1);
+            color: #e0e0e0;
+        }
+        .shower.full .slide pre {
+            background: rgba(255,255,255,0.08);
+        }
+
+        /* Зоны клика влево/вправо в полноэкранном режиме */
+        .shower-full-nav {
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            width: 50%;
+            z-index: 10;
+            cursor: pointer;
+            display: none;
+        }
+        .shower.full .shower-full-nav {
+            display: block;
+        }
+        .shower-full-nav--prev {
+            left: 0;
+            cursor: w-resize;
+        }
+        .shower-full-nav--next {
+            right: 0;
+            cursor: e-resize;
+        }
+        .shower-full-nav--prev:hover {
+            background: linear-gradient(to right, rgba(0,0,0,0.08), transparent);
+        }
+        .shower-full-nav--next:hover {
+            background: linear-gradient(to left, rgba(0,0,0,0.08), transparent);
+        }
+    </style>
+</head>
+<body class="shower list">
+    <div class="shower-full-nav shower-full-nav--prev" id="nav-prev" title="Предыдущий слайд"></div>
+    <div class="shower-full-nav shower-full-nav--next" id="nav-next" title="Следующий слайд"></div>
+    <header class="caption">
+        <h1 id="caption-title"></h1>
+        <p id="caption-subtitle"></p>
+    </header>
+
+    <div id="slides-container"></div>
+
+    <!-- <footer class="badge">
+        <a id="badge-link" href=""></a>
+    </footer> -->
+
+    <script>
+        (function() {
+            var config = window.PRESENTATION_CONFIG || {};
+            document.title = config.title || 'Презентация';
+            var titleEl = document.getElementById('caption-title');
+            var subtitleEl = document.getElementById('caption-subtitle');
+            var badgeEl = document.getElementById('badge-link');
+            if (titleEl) titleEl.textContent = config.title || '';
+            if (subtitleEl) subtitleEl.textContent = config.subtitle || '';
+            if (badgeEl && config.badge) {
+                badgeEl.textContent = config.badge.text || '';
+                badgeEl.href = config.badge.href || '#';
+            }
+
+            var SLIDES = config.slides || ['01-title', '02-text-list', '03-columns', '04-code'];
+
+            async function loadSlides() {
+                const container = document.getElementById('slides-container');
+                for (const name of SLIDES) {
+                    const res = await fetch('slides/' + name + '/index.html');
+                    const html = await res.text();
+                    container.insertAdjacentHTML('beforeend', html);
+                }
+                const script = document.createElement('script');
+                script.src = 'node_modules/@shower/core/dist/shower.js';
+                script.onload = () => {
+                    if (document.readyState === 'loading') {
+                        document.addEventListener('DOMContentLoaded', initFullscreenNav);
+                    } else {
+                        initFullscreenNav();
+                    }
+                };
+                document.body.appendChild(script);
+            }
+            loadSlides();
+        })();
+
+        function initFullscreenNav() {
+            const shower = window.shower;
+            if (!shower) return;
+            const prevEl = document.getElementById('nav-prev');
+            const nextEl = document.getElementById('nav-next');
+            if (!prevEl || !nextEl) return;
+            prevEl.addEventListener('click', (e) => {
+                if (shower.isFullMode) {
+                    e.preventDefault();
+                    shower.prev(true);
+                }
+            });
+            nextEl.addEventListener('click', (e) => {
+                if (shower.isFullMode) {
+                    e.preventDefault();
+                    shower.next(true);
+                }
+            });
+        }
+    </script>
+</body>
+</html>
