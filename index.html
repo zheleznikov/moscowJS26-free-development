@@ -4,6 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Презентация</title>
+    <link rel="icon" type="image/png" href="favicon.png">
     <script src="config.js"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -23,8 +24,31 @@
         }
 
         .shower.list {
-            grid-template-columns: repeat(3, calc(var(--slide-width) * var(--slide-scale)));
+            grid-template-columns: repeat(auto-fill, calc(var(--slide-width) * var(--slide-scale)));
             justify-content: center;
+        }
+        /* Адаптивность: крупные карточки на мобильных */
+        @media (max-width: 400px) {
+            .shower.list { --slide-scale: 0.30; }
+        }
+        @media (min-width: 401px) and (max-width: 600px) {
+            .shower.list { --slide-scale: 0.36; }
+        }
+        @media (min-width: 601px) and (max-width: 900px) {
+            .shower.list { --slide-scale: 0.40; }
+        }
+        /* Отступы по бокам на мобильных */
+        @media (max-width: 900px) {
+            .shower.list {
+                padding-left: max(var(--shower-list-inline), 12px);
+                padding-right: max(var(--shower-list-inline), 12px);
+            }
+        }
+        /* На больших экранах — не более 3 колонок, сетка по центру */
+        @media (min-width: 1100px) {
+            .shower.list {
+                grid-template-columns: repeat(3, calc(var(--slide-width) * var(--slide-scale)));
+            }
         }
         .shower.list #slides-container {
             display: contents;
@@ -107,11 +131,35 @@
         .shower-full-nav--next:hover {
             background: linear-gradient(to left, rgba(0,0,0,0.08), transparent);
         }
+
+        /* Полоска прогресса презентации внизу */
+        .presentation-progress {
+            position: fixed;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.15);
+            z-index: 20;
+            display: none;
+        }
+        .shower.full .presentation-progress {
+            display: block;
+        }
+        .presentation-progress__fill {
+            height: 100%;
+            background: linear-gradient(90deg, #f7df1e, #c9a227);
+            width: 0%;
+            transition: width 0.2s ease;
+        }
     </style>
 </head>
 <body class="shower list">
     <div class="shower-full-nav shower-full-nav--prev" id="nav-prev" title="Предыдущий слайд"></div>
     <div class="shower-full-nav shower-full-nav--next" id="nav-next" title="Следующий слайд"></div>
+    <div class="presentation-progress" id="presentation-progress" aria-hidden="true">
+        <div class="presentation-progress__fill" id="presentation-progress-fill"></div>
+    </div>
     <header class="caption">
         <h1 id="caption-title"></h1>
         <p id="caption-subtitle"></p>
@@ -154,6 +202,8 @@
                     } else {
                         initFullscreenNav();
                     }
+                    initProgressBar();
+                    initFullModeScrollFix();
                 };
                 document.body.appendChild(script);
             }
@@ -176,6 +226,43 @@
                 if (shower.isFullMode) {
                     e.preventDefault();
                     shower.next(true);
+                }
+            });
+        }
+
+        function initProgressBar() {
+            const shower = window.shower;
+            const fillEl = document.getElementById('presentation-progress-fill');
+            if (!shower || !fillEl) return;
+
+            function updateProgress() {
+                var length = shower.slides.length;
+                if (length <= 1) {
+                    fillEl.style.width = '100%';
+                    return;
+                }
+                var index = shower.activeSlideIndex;
+                if (index < 0) index = 0;
+                var pct = (index / (length - 1)) * 100;
+                fillEl.style.width = pct + '%';
+            }
+
+            shower.addEventListener('start', updateProgress);
+            shower.addEventListener('slidechange', updateProgress);
+            if (shower._isStarted) updateProgress();
+        }
+
+        /** При переходе в полноэкранный режим прокручиваем страницу в начало, чтобы слайд был виден при клике с любого места списка. */
+        function initFullModeScrollFix() {
+            const shower = window.shower;
+            if (!shower) return;
+            shower.addEventListener('modechange', () => {
+                if (shower.isFullMode) {
+                    requestAnimationFrame(() => {
+                        window.scrollTo(0, 0);
+                        document.documentElement.scrollTop = 0;
+                        document.body.scrollTop = 0;
+                    });
                 }
             });
         }

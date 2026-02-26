@@ -18,7 +18,25 @@ npm run serve
 | `npm run serve` | Запуск презентации в браузере |
 | `npm run pdf` | Экспорт в PDF |
 | `npm run archive` | Собрать архив презентации |
-| `npm run publish` | Опубликовать (например, на GitHub Pages) |
+| `npm run publish` | Опубликовать на GitHub Pages |
+
+## GitHub Pages
+
+1. Создайте репозиторий на GitHub и привяжите его к проекту:
+   ```bash
+   git remote add origin https://github.com/ВАШ_USERNAME/ВАШ_РЕПОЗИТОРИЙ.git
+   ```
+
+2. Опубликуйте презентацию:
+   ```bash
+   npm run publish
+   ```
+   Команда соберёт проект, создаст/обновит ветку `gh-pages` и запушит её в GitHub.
+
+3. В настройках репозитория на GitHub: **Settings → Pages** — источник должен быть **Deploy from a branch**; ветка **gh-pages**, папка **/ (root)**. Обычно GitHub подхватывает это сам после первого пуша в `gh-pages`.
+
+4. Сайт будет доступен по адресу:  
+   `https://ВАШ_USERNAME.github.io/ВАШ_РЕПОЗИТОРИЙ/`
 
 ## Структура слайдов
 
