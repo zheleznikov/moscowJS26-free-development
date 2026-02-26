@@ -104,6 +104,14 @@
             background: rgba(255,255,255,0.08);
         }
 
+        .slide-placeholder {
+            margin: 0;
+            padding: 1em;
+            color: rgba(255, 255, 255, 0.5);
+            text-align: center;
+            font-size: 0.9em;
+        }
+
         /* Зоны клика влево/вправо в полноэкранном режиме */
         .shower-full-nav {
             position: fixed;
@@ -167,10 +175,6 @@
 
     <div id="slides-container"></div>
 
-    <!-- <footer class="badge">
-        <a id="badge-link" href=""></a>
-    </footer> -->
-
     <script>
         (function() {
             var config = window.PRESENTATION_CONFIG || {};
@@ -187,16 +191,33 @@
 
             var SLIDES = config.slides || ['01-title', '02-text-list', '03-columns', '04-code'];
 
-            async function loadSlides() {
-                const container = document.getElementById('slides-container');
-                for (const name of SLIDES) {
-                    const res = await fetch('slides/' + name + '/index.html');
-                    const html = await res.text();
-                    container.insertAdjacentHTML('beforeend', html);
-                }
-                const script = document.createElement('script');
+            function createPlaceholders(container) {
+                SLIDES.forEach(function(name, index) {
+                    var section = document.createElement('section');
+                    section.className = 'slide';
+                    section.dataset.slideName = name;
+                    section.dataset.slideIndex = String(index);
+                    section.innerHTML = '<p class="slide-placeholder">Загрузка…</p>';
+                    container.appendChild(section);
+                });
+            }
+
+            function setSlideContent(section, html) {
+                var parser = new DOMParser();
+                var doc = parser.parseFromString(html, 'text/html');
+                var fetchedSection = doc.querySelector('section.slide');
+                var inner = fetchedSection ? fetchedSection.innerHTML : html;
+                section.innerHTML = inner;
+                section.classList.remove('slide--loading');
+            }
+
+            function loadSlides() {
+                var container = document.getElementById('slides-container');
+                createPlaceholders(container);
+
+                var script = document.createElement('script');
                 script.src = 'node_modules/@shower/core/dist/shower.js';
-                script.onload = () => {
+                script.onload = function() {
                     if (document.readyState === 'loading') {
                         document.addEventListener('DOMContentLoaded', initFullscreenNav);
                     } else {
@@ -204,8 +225,24 @@
                     }
                     initProgressBar();
                     initFullModeScrollFix();
+                    preventFullscreenOnMobile();
                 };
                 document.body.appendChild(script);
+
+                SLIDES.forEach(function(name, index) {
+                    var section = container.children[index];
+                    if (!section || !section.classList.contains('slide')) return;
+                    section.classList.add('slide--loading');
+                    fetch('slides/' + name + '/index.html')
+                        .then(function(res) { return res.text(); })
+                        .then(function(html) {
+                            setSlideContent(section, html);
+                        })
+                        .catch(function() {
+                            section.innerHTML = '<p class="slide-placeholder">Ошибка загрузки</p>';
+                            section.classList.remove('slide--loading');
+                        });
+                });
             }
             loadSlides();
         })();
@@ -252,7 +289,20 @@
             if (shower._isStarted) updateProgress();
         }
 
-        /** При переходе в полноэкранный режим прокручиваем страницу в начало, чтобы слайд был виден при клике с любого места списка. */
+        function preventFullscreenOnMobile() {
+            var container = document.getElementById('slides-container');
+            if (!container) return;
+            var mobile = window.matchMedia('(max-width: 600px)');
+            container.addEventListener('click', function(e) {
+                if (!mobile.matches) return;
+                var slide = e.target.closest('.slide');
+                if (slide) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                }
+            }, true);
+        }
+
         function initFullModeScrollFix() {
             const shower = window.shower;
             if (!shower) return;
