@@ -1,9 +1,73 @@
 <section class="slide">
-    <h2>Кто я</h2>
-    <ul>
-        <li><strong>Сергей Железников</strong></li>
-        <li>Разработчик в Сбере</li>
-        <li>Делаю админку и микро-приложение</li>
-        <li>Сделал свой продукт</li>
-    </ul>
+    <h2 class="slide__title">Кто я</h2>
+
+    <div class="who-me">
+        <img src="slides/02-who-4/ava.jpg"
+             alt="Сергей Железников"
+             class="who-me__photo">
+
+        <div class="who-me__content">
+            <h3 class="who-me__name">Сергей Железников</h3>
+
+            <ul class="who-me__list">
+                <li>Разработчик в <strong>Сбере</strong></li>
+                <li>Делаю админку и микро-приложение</li>
+                <li>Автор собственного продукта</li>
+            </ul>
+        </div>
+    </div>
+
+    <style>
+        .slide__title {
+            margin-bottom: 2.5rem;
+        }
+
+        .who-me {
+            display: flex;
+            align-items: center;
+            gap: 3rem;
+        }
+
+        .who-me__photo {
+            width: 180px;
+            height: 180px;
+            border-radius: 50%;
+            object-fit: cover;
+            flex-shrink: 0;
+
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 0 0 4px rgba(255,255,255,0.03);
+        }
+
+        .who-me__content {
+            max-width: 600px;
+        }
+
+        .who-me__name {
+            font-size: 2rem;
+            margin: 0 0 1.2rem 0;
+            font-weight: 600;
+            color: #fff;
+            letter-spacing: 0.02em;
+        }
+
+        .who-me__list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .who-me__list li {
+            font-size: 1.1rem;
+            color: #e0e0e0;
+            margin-bottom: 0.6rem;
+            line-height: 1.5;
+        }
+
+        .who-me__list li::before {
+            content: "—";
+            margin-right: 0.6rem;
+            color: #7db8f0;
+        }
+    </style>
 </section>

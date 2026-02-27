@@ -6,6 +6,51 @@
     <title>Презентация</title>
     <link rel="icon" type="image/png" href="favicon.png">
     <script src="config.js"></script>
+    <script src="theme.js"></script>
+    <script>
+        (function() {
+            var t = window.PRESENTATION_THEME || {};
+            var s = t.slide || {};
+            var c = t.card || {};
+            var r = t.ribbon || {};
+            var p = t.progress || {};
+            var ph = t.placeholder || {};
+            var cap = t.caption || {};
+            var page = t.page || {};
+            var icon = (r.icon ? "url('" + r.icon + "')" : "none");
+            var vars = {
+                '--theme-slide-bg': s.background,
+                '--theme-slide-text': s.text,
+                '--theme-slide-heading': s.heading,
+                '--theme-slide-link': s.link,
+                '--theme-slide-code-bg': s.codeBackground,
+                '--theme-slide-code-text': s.codeText,
+                '--theme-slide-pre-bg': s.preBackground,
+                '--theme-card-bg': c.background,
+                '--theme-card-text': c.text,
+                '--theme-card-heading': c.heading,
+                '--theme-card-link': c.link,
+                '--theme-card-code-bg': c.codeBackground,
+                '--theme-card-code-text': c.codeText,
+                '--theme-card-active-border': c.activeBorder,
+                '--theme-ribbon-icon': icon,
+                '--theme-ribbon-text': r.textColor,
+                '--theme-progress-track': p.track,
+                '--theme-progress-fill': p.fill,
+                '--theme-placeholder-text': ph.textColor,
+                '--theme-caption-bg': cap.background,
+                '--theme-caption-text': cap.textColor,
+                '--theme-page-bg': page.background,
+            };
+            var css = ':root {';
+            for (var k in vars) { if (vars[k] != null) css += k + ':' + vars[k] + ';'; }
+            css += '}';
+            var style = document.createElement('style');
+            style.id = 'presentation-theme-vars';
+            style.textContent = css;
+            document.head.appendChild(style);
+        })();
+    </script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -16,16 +61,22 @@
             font-family: 'Inter', sans-serif;
         }
 
-        /* Жёлтый флажок с логотипом JS и номером слайда */
+        .caption {
+            background: var(--theme-caption-bg, transparent);
+            color: var(--theme-caption-text, #333);
+        }
+
+        /* Флажок с иконкой и номером слайда */
         .slide::after {
-            background-image: url('assets/ribbon-js.svg');
-            color: #323330;
+            background-image: var(--theme-ribbon-icon, url('assets/ribbon-js.svg'));
+            color: var(--theme-ribbon-text, #323330);
             padding-top: 34px;
         }
 
         .shower.list {
             grid-template-columns: repeat(auto-fill, calc(var(--slide-width) * var(--slide-scale)));
             justify-content: center;
+            background-color: var(--theme-page-bg, #585a5e);
         }
         /* Адаптивность: крупные карточки на мобильных */
         @media (max-width: 400px) {
@@ -62,82 +113,150 @@
             border-radius: 12px;
             box-shadow: 0 4px 20px rgb(0 0 0 / 12%), 0 1px 3px rgb(0 0 0 / 8%);
             transition: box-shadow 0.2s, transform 0.2s;
-            background-color: #000;
-            color: #e0e0e0;
+            background-color: var(--theme-card-bg, #000);
+            color: var(--theme-card-text, #e0e0e0);
         }
         .shower.list .slide h2,
         .shower.list .slide h3 {
-            color: #fff;
+            color: var(--theme-card-heading, #fff);
         }
         .shower.list .slide a {
-            color: #7db8f0;
+            color: var(--theme-card-link, #7db8f0);
         }
         .shower.list .slide code {
-            background: rgba(255,255,255,0.1);
-            color: #e0e0e0;
+            background: var(--theme-card-code-bg, rgba(255,255,255,0.1));
+            color: var(--theme-card-code-text, #e0e0e0);
         }
         .shower.list .slide:hover {
             transform: scale(var(--slide-scale)) translateY(-2px);
             box-shadow: 0 12px 32px rgb(0 0 0 / 18%), 0 2px 8px rgb(0 0 0 / 10%);
         }
         .shower.list .slide.active {
-            box-shadow: 0 0 0 3px #191c20, 0 12px 32px rgb(0 0 0 / 18%);
+            box-shadow: 0 0 0 3px var(--theme-card-active-border, #191c20), 0 12px 32px rgb(0 0 0 / 18%);
         }
 
-        /* Полноэкранные слайды — чёрный фон */
+        /* Полноэкранные слайды */
         .shower.full .slide {
-            background-color: #000;
-            color: #e0e0e0;
+            background-color: var(--theme-slide-bg, #000);
+            color: var(--theme-slide-text, #e0e0e0);
         }
         .shower.full .slide h2,
         .shower.full .slide h3 {
-            color: #fff;
+            color: var(--theme-slide-heading, #fff);
         }
         .shower.full .slide a {
-            color: #7db8f0;
+            color: var(--theme-slide-link, #7db8f0);
         }
         .shower.full .slide code {
-            background: rgba(255,255,255,0.1);
-            color: #e0e0e0;
+            background: var(--theme-slide-code-bg, rgba(255,255,255,0.1));
+            color: var(--theme-slide-code-text, #e0e0e0);
         }
         .shower.full .slide pre {
-            background: rgba(255,255,255,0.08);
+            background: var(--theme-slide-pre-bg, rgba(255,255,255,0.08));
         }
 
         .slide-placeholder {
             margin: 0;
             padding: 1em;
-            color: rgba(255, 255, 255, 0.5);
+            color: var(--theme-placeholder-text, rgba(255, 255, 255, 0.5));
             text-align: center;
             font-size: 0.9em;
         }
 
-        /* Зоны клика влево/вправо в полноэкранном режиме */
+        /* Зоны навигации влево/вправо в полноэкранном режиме */
         .shower-full-nav {
             position: fixed;
             top: 0;
             bottom: 0;
             width: 50%;
             z-index: 10;
-            cursor: pointer;
+            cursor: default;
             display: none;
+            pointer-events: none; /* не перехватывать мышь — чтобы можно было выделять текст на слайде */
         }
         .shower.full .shower-full-nav {
             display: block;
         }
         .shower-full-nav--prev {
             left: 0;
-            cursor: w-resize;
         }
         .shower-full-nav--next {
             right: 0;
-            cursor: e-resize;
         }
         .shower-full-nav--prev:hover {
             background: linear-gradient(to right, rgba(0,0,0,0.08), transparent);
         }
         .shower-full-nav--next:hover {
             background: linear-gradient(to left, rgba(0,0,0,0.08), transparent);
+        }
+
+        /* Стрелки навигации — видны только при наведении на саму стрелку */
+        .shower-full-nav__arrow {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 48px;
+            height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+            font-weight: 300;
+            color: rgba(255, 255, 255, 0.95);
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8), 0 0 1px rgba(0, 0, 0, 0.5);
+            opacity: 0;
+            transition: opacity 0.2s ease;
+            border-radius: 8px;
+            cursor: pointer;
+            pointer-events: auto; /* стрелка снова ловит клики */
+        }
+        .shower-full-nav__arrow:hover {
+            opacity: 1;
+        }
+        .shower-full-nav--prev .shower-full-nav__arrow {
+            left: 24px;
+        }
+        .shower-full-nav--next .shower-full-nav__arrow {
+            right: 24px;
+        }
+
+        /* Кнопка закрытия (крестик) в правом верхнем углу */
+        .shower-full-close {
+            position: fixed;
+            top: 12px;
+            right: 16px;
+            z-index: 25;
+            width: 40px;
+            height: 40px;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            border-radius: 999px;
+            color: rgba(255, 255, 255, 0.9);
+            background: transparent;
+            cursor: pointer;
+            pointer-events: none;
+            opacity: 0;
+            transition: background 0.15s ease, opacity 0.15s ease, transform 0.1s ease;
+        }
+        .shower.full .shower-full-close {
+            display: flex;
+            pointer-events: auto;
+        }
+        .shower-full-close-icon {
+            font-size: 22px;
+            line-height: 1;
+            transform: scale(0.8);
+            transition: transform 0.15s ease;
+        }
+        .shower-full-close:hover {
+            background: rgba(0, 0, 0, 0.35);
+        }
+        .shower-full-close:hover .shower-full-close-icon {
+            transform: scale(1);
+        }
+        .shower-full-close-visible {
+            opacity: 1;
         }
 
         /* Полоска прогресса презентации внизу */
@@ -147,7 +266,7 @@
             right: 0;
             bottom: 0;
             height: 4px;
-            background: rgba(255, 255, 255, 0.15);
+            background: var(--theme-progress-track, rgba(255, 255, 255, 0.15));
             z-index: 20;
             display: none;
         }
@@ -156,15 +275,18 @@
         }
         .presentation-progress__fill {
             height: 100%;
-            background: linear-gradient(90deg, #f7df1e, #c9a227);
+            background: var(--theme-progress-fill, linear-gradient(90deg, #f7df1e, #c9a227));
             width: 0%;
             transition: width 0.2s ease;
         }
     </style>
 </head>
 <body class="shower list">
-    <div class="shower-full-nav shower-full-nav--prev" id="nav-prev" title="Предыдущий слайд"></div>
-    <div class="shower-full-nav shower-full-nav--next" id="nav-next" title="Следующий слайд"></div>
+    <div class="shower-full-nav shower-full-nav--prev" id="nav-prev" title="Предыдущий слайд"><span class="shower-full-nav__arrow" aria-hidden="true">←</span></div>
+    <div class="shower-full-nav shower-full-nav--next" id="nav-next" title="Следующий слайд"><span class="shower-full-nav__arrow" aria-hidden="true">→</span></div>
+    <button class="shower-full-close" id="shower-full-close" type="button" aria-label="Выйти из полноэкранного режима">
+        <span class="shower-full-close-icon" aria-hidden="true">✕</span>
+    </button>
     <div class="presentation-progress" id="presentation-progress" aria-hidden="true">
         <div class="presentation-progress__fill" id="presentation-progress-fill"></div>
     </div>
@@ -252,19 +374,90 @@
             if (!shower) return;
             const prevEl = document.getElementById('nav-prev');
             const nextEl = document.getElementById('nav-next');
+            const closeEl = document.getElementById('shower-full-close');
             if (!prevEl || !nextEl) return;
             prevEl.addEventListener('click', (e) => {
-                if (shower.isFullMode) {
+                if (!shower.isFullMode) return;
+                const arrow = e.target.closest('.shower-full-nav__arrow');
+                if (!arrow) {
                     e.preventDefault();
-                    shower.prev(true);
+                    e.stopPropagation();
+                    return;
                 }
+                e.preventDefault();
+                e.stopPropagation();
+                shower.prev(true);
             });
             nextEl.addEventListener('click', (e) => {
-                if (shower.isFullMode) {
+                if (!shower.isFullMode) return;
+                const arrow = e.target.closest('.shower-full-nav__arrow');
+                if (!arrow) {
                     e.preventDefault();
-                    shower.next(true);
+                    e.stopPropagation();
+                    return;
                 }
+                e.preventDefault();
+                e.stopPropagation();
+                shower.next(true);
             });
+            if (closeEl) {
+                // Показ/скрытие крестика по наведению в правый верхний угол
+                let closeHoverZone = null;
+                function ensureHoverZone() {
+                    if (closeHoverZone) return closeHoverZone;
+                    closeHoverZone = document.createElement('div');
+                    closeHoverZone.style.position = 'fixed';
+                    closeHoverZone.style.top = '0';
+                    closeHoverZone.style.right = '0';
+                    closeHoverZone.style.width = '80px';
+                    closeHoverZone.style.height = '80px';
+                    closeHoverZone.style.zIndex = '24';
+                    closeHoverZone.style.pointerEvents = 'auto';
+                    closeHoverZone.style.background = 'transparent';
+                    closeHoverZone.addEventListener('mouseenter', () => {
+                        closeEl.classList.add('shower-full-close-visible');
+                    });
+                    closeHoverZone.addEventListener('mouseleave', (event) => {
+                        // если ушли прямо на кнопку, оставляем видимой
+                        const related = event.relatedTarget;
+                        if (related && (related === closeEl || closeEl.contains(related))) return;
+                        closeEl.classList.remove('shower-full-close-visible');
+                    });
+                    document.body.appendChild(closeHoverZone);
+                    return closeHoverZone;
+                }
+                closeEl.addEventListener('mouseenter', () => {
+                    closeEl.classList.add('shower-full-close-visible');
+                });
+                closeEl.addEventListener('mouseleave', (event) => {
+                    const related = event.relatedTarget;
+                    const zone = closeHoverZone;
+                    if (related && zone && (related === zone || zone.contains(related))) return;
+                    closeEl.classList.remove('shower-full-close-visible');
+                });
+                closeEl.addEventListener('click', (e) => {
+                    if (!shower.isFullMode) return;
+                    e.preventDefault();
+                    e.stopPropagation();
+                    closeEl.classList.remove('shower-full-close-visible');
+                    shower.exitFullMode();
+                });
+                // Следим за изменением режима, чтобы включать/выключать hover-зону
+                shower.addEventListener('modechange', () => {
+                    if (shower.isFullMode) {
+                        const zone = ensureHoverZone();
+                        zone.style.display = 'block';
+                    } else if (closeHoverZone) {
+                        closeHoverZone.style.display = 'none';
+                        closeEl.classList.remove('shower-full-close-visible');
+                    }
+                });
+                // если уже в full-режиме при инициализации
+                if (shower.isFullMode) {
+                    const zone = ensureHoverZone();
+                    zone.style.display = 'block';
+                }
+            }
         }
 
         function initProgressBar() {

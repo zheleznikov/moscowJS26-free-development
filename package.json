@@ -1,15 +1,18 @@
 {
   "private": true,
   "scripts": {
-    "pdf": "shower pdf",
-    "serve": "serve . -p 8080",
-    "serve:shower": "shower serve --open",
+    "pdf": "node scripts/pdf-via-server.js",
+    "serve": "live-server --port=8080",
+    "serve:no-browser": "live-server --port=8080 --no-browser",
+    "serve:shower": "live-server --port=8080",
+    "serve:static": "serve . -p 8080",
     "archive": "shower archive",
     "bundle": "shower bundle",
     "publish": "shower publish"
   },
   "devDependencies": {
     "@shower/cli": "0.3.1",
+    "live-server": "1.2.2",
     "serve": "14.2.4"
   },
   "dependencies": {
