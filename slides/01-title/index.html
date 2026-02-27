@@ -1,4 +1,31 @@
-<section class="slide">
-    <h2 class="slide__title">Что происходит, когда разработчик получает полную свободу?</h2>
-    <p>Опыт создания собственного продукта от идеи до рабочего сервиса</p>
+<section class="slide slide--title-page">
+    <style>
+        .slide--title-page {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding-top: 0;
+            padding-bottom: 0;
+        }
+        .slide--title-page__content {
+            position: absolute;
+            top: 40%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 92%;
+            max-width: 1400px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+        .slide--title-page__content .slide__title {
+            margin: 0;
+            font-size: clamp(1.75rem, 4vw, 4rem);
+        }
+    </style>
+    <div class="slide--title-page__content">
+        <h2 class="slide__title">Что происходит, когда разработчик получает полную свободу?</h2>
+    </div>
 </section>

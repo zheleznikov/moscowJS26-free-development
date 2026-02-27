@@ -26,6 +26,7 @@
                 '--theme-slide-code-bg': s.codeBackground,
                 '--theme-slide-code-text': s.codeText,
                 '--theme-slide-pre-bg': s.preBackground,
+                '--theme-slide-list-accent': s.listAccent,
                 '--theme-card-bg': c.background,
                 '--theme-card-text': c.text,
                 '--theme-card-heading': c.heading,
@@ -118,7 +119,11 @@
         }
         .shower.list .slide h2,
         .shower.list .slide h3 {
-            color: var(--theme-card-heading, #fff);
+            background: var(--theme-card-heading, #fff);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            -webkit-text-fill-color: transparent;
         }
         .shower.list .slide a {
             color: var(--theme-card-link, #7db8f0);
@@ -142,7 +147,11 @@
         }
         .shower.full .slide h2,
         .shower.full .slide h3 {
-            color: var(--theme-slide-heading, #fff);
+            background: var(--theme-slide-heading, #fff);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            -webkit-text-fill-color: transparent;
         }
         .shower.full .slide a {
             color: var(--theme-slide-link, #7db8f0);
@@ -153,6 +162,28 @@
         }
         .shower.full .slide pre {
             background: var(--theme-slide-pre-bg, rgba(255,255,255,0.08));
+        }
+
+        /* Маркеры списка — точки в цвет заголовка (переопределяем тире из Shower для :lang(ru)) */
+        .slide ul {
+            list-style: none;
+            padding-left: 0;
+            margin-left: 0;
+        }
+        .slide ul > li {
+            position: relative;
+            padding-left: 0.5   em;
+        }
+        .slide ul > li::before,
+        .slide ul > li:lang(ru)::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0.9em;
+            width: 0.4em;
+            height: 0.4em;
+            border-radius: 50%;
+            background: var(--theme-slide-list-accent, #3ba56b);
         }
 
         .slide-placeholder {

@@ -7,11 +7,12 @@ window.PRESENTATION_THEME = {
     slide: {
         background: '#000',
         text: '#e0e0e0',
-        heading: '#fff',
+        heading: 'linear-gradient(90deg, #b8b8b8, #fff)',
         link: '#7db8f0',
         codeBackground: 'rgba(255,255,255,0.1)',
         codeText: '#e0e0e0',
         preBackground: 'rgba(255,255,255,0.08)',
+        listAccent: '#b8b8b8',
     },
 
     // Общий фон страницы (режим списка слайдов; по умолчанию — серый из Shower)
@@ -23,7 +24,7 @@ window.PRESENTATION_THEME = {
     card: {
         background: '#000',
         text: '#e0e0e0',
-        heading: '#fff',
+        heading: 'linear-gradient(90deg, #b8b8b8, #fff)',
         link: '#7db8f0',
         codeBackground: 'rgba(255,255,255,0.1)',
         codeText: '#e0e0e0',
