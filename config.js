@@ -29,7 +29,7 @@ window.PRESENTATION_CONFIG = {
         '13-role-1', '13-role-2', '13-role-3',
         '14-result',
         '14-blackbox-1', '14-blackbox-2', '14-blackbox-3',
-        //  '14-blackbox-4',
+         '14-blackbox-4',
         /**
          * Блок что во мне изменилось. Можно пропустить. Добавить, если потребуется увеличить тайминг
          */
