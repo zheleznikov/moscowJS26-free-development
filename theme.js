@@ -17,7 +17,13 @@ window.PRESENTATION_THEME = {
 
     // Общий фон страницы (режим списка слайдов; по умолчанию — серый из Shower)
     page: {
-        background: '#30343a',
+        background: [
+            'radial-gradient(ellipse 70% 70% at 15% 5%, rgba(60, 50, 120, 0.35), transparent 55%)',
+            'radial-gradient(ellipse 65% 65% at 88% 45%, rgba(80, 40, 100, 0.3), transparent 50%)',
+            'radial-gradient(ellipse 60% 60% at 20% 95%, rgba(40, 70, 120, 0.3), transparent 50%)',
+            'radial-gradient(ellipse 55% 55% at 75% 15%, rgba(90, 50, 130, 0.25), transparent 50%)',
+            '#12121a',
+        ].join(', '),
     },
 
     // Карточки в режиме списка (можно задать свои цвета)
