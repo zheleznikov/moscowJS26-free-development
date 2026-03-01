@@ -14,19 +14,28 @@ window.PRESENTATION_CONFIG = {
         '02-who-4',
         '03-want-to-tell-1', '03-want-to-tell-2', '03-want-to-tell-3', '03-want-to-tell-4',
         '04-value-2', '04-value-3', '04-value-4', '04-value-5',
-        '05-start',
+        '05-start', '05-start-1',
         '06-context-1', '06-context-2', '06-context-3', '06-context-4', '06-context-5',
         '07-freedom',
         '07-freedom-2', '07-freedom-3', '07-freedom-4', '07-freedom-5',
         
+        '09-tz-bonus',
         '09-tz-bonus-1', '09-tz-bonus-2', '09-tz-bonus-3', '09-tz-bonus-4',
+        '10-tz-frame',
         '10-tz-frame-1', '10-tz-frame-2', '10-tz-frame-3',
         //  '10-tz-frame-4',
         // '11-significance-1',
         '11-tz-troubles-1', '11-tz-troubles-2', 
         '13-role-1', '13-role-2', '13-role-3',
-        '14-blackbox-1', '14-blackbox-2', '14-blackbox-3', '14-blackbox-4',
-        '15-questions-1', '15-questions-2', '15-questions-3', '15-questions-4',
+        '14-result',
+        '14-blackbox-1', '14-blackbox-2', '14-blackbox-3',
+        //  '14-blackbox-4',
+        /**
+         * Блок что во мне изменилось. Можно пропустить. Добавить, если потребуется увеличить тайминг
+         */
+        // '15-questions',
+        // '15-questions-1', '15-questions-2', '15-questions-3', '15-questions-4',
+
         '16-effect-1', '16-effect-2', '16-effect-3', '16-effect-4',
         '17-conclusion-1',
         '18-deadline-bonus-1', '18-deadline-bonus-2', '18-deadline-bonus-3',

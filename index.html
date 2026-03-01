@@ -359,8 +359,20 @@
                 var parser = new DOMParser();
                 var doc = parser.parseFromString(html, 'text/html');
                 var fetchedSection = doc.querySelector('section.slide');
-                var inner = fetchedSection ? fetchedSection.innerHTML : html;
-                section.innerHTML = inner;
+                if (!fetchedSection) {
+                    section.innerHTML = html;
+                    section.classList.remove('slide--loading');
+                    return;
+                }
+                var scripts = Array.from(fetchedSection.querySelectorAll('script'));
+                var clone = fetchedSection.cloneNode(true);
+                clone.querySelectorAll('script').forEach(function (s) { s.remove(); });
+                section.innerHTML = clone.innerHTML;
+                scripts.forEach(function (oldScript) {
+                    var script = document.createElement('script');
+                    script.textContent = oldScript.textContent;
+                    section.appendChild(script);
+                });
                 section.classList.remove('slide--loading');
             }
 
