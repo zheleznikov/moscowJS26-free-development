@@ -1,4 +1,57 @@
-<section class="slide">
+<section class="slide slide--result-product">
+
     <h2>Получился продукт</h2>
-    <p>МЫЛЬНЫЙ КАЛЬКУЛЯТОР</p>
+
+    <style>
+        .slide--result-product { padding-top: 1rem; }
+        .result-product {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1.25rem;
+            margin-top: 0.5rem;
+        }
+        .result-product__logo {
+            width: 180px;
+            height: 180px;
+            object-fit: contain;
+            border-radius: 16px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+        }
+        .result-product__name {
+            font-size: 1.5rem;
+            font-weight: 600;
+            letter-spacing: 0.05em;
+            margin: 0;
+            color: #fff;
+        }
+        .result-product__link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 1.25rem;
+            font-weight: 500;
+            color: #ec4899; 
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            transition: background 0.2s, color 0.2s;
+        }
+        .result-product__link:hover {
+            background: rgba(236, 72, 153, 0.15);
+            color: #db2777; /* Tailwind pink-600 */
+        }
+        .result-product__link::after {
+            font-size: 1rem;
+        }
+    </style>
+    <div class="result-product">
+        <img class="result-product__logo" src="slides/130-result-2/logo.jpg" alt="МЫЛЬНЫЙ КАЛЬКУЛЯТОР" />
+        <p class="result-product__name">МЫЛЬНЫЙ КАЛЬКУЛЯТОР</p>
+        <a class="result-product__link" href="https://savasavon.com" target="_blank" rel="noopener noreferrer"
+        style="color: #ec4899;"
+        >
+            savasavon.com
+        </a>
+    </div>
 </section>
