@@ -68,6 +68,19 @@
         }
         
 
+        /* Хэштег в правом верхнем углу слайда */
+        .slide {
+            position: relative;
+        }
+        .slide__hash {
+            position: absolute;
+            bottom: 1rem;
+            right: 1rem;
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.5);
+            letter-spacing: 0.05em;
+        }
+
         /* Флажок с иконкой и номером слайда */
         .slide::after {
             background-image: var(--theme-ribbon-icon, url('assets/ribbon-js.svg'));

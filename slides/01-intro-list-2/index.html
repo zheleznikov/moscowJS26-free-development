@@ -1,4 +1,5 @@
 <section class="slide slide--title-page">
+    <span class="slide__hash">#intro</span>
     <style>
         .slide--title-page {
             position: relative;
@@ -38,9 +39,27 @@
             color: yellow;
             text-align: right;
         }
+        .slide--title-page__list {
+            position: absolute;
+            top: 58%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 92%;
+            max-width: 1400px;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            list-style: none;
+        }
     </style>
     <div class="slide--title-page__content">
         <h2 class="slide__title">Что происходит, когда разработчик получает полную свободу?</h2>
         <p class="title__p">На примере создания собственного продукта</p>
     </div>
+    <ul class="slide--title-page__list">
+        <li>умение принимать решения</li>
+        <li>формулировать требования</li>
+    </ul>
 </section>
